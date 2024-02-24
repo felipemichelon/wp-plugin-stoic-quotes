@@ -28,52 +28,22 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-function rsq_create_table()
+function activateRandomStoicQuotesPlugin()
 {
-    global $wpdb;
-
-    $table_name = $wpdb->prefix . 'randomstoicquotes';
-
-    $sql = "CREATE TABLE " . $table_name . " (
-        id int(11) NOT NULL AUTO_INCREMENT,
-        quote_text tinytext NOT NULL,
-        quote_auhor VARCHAR(10) NOT NULL,
-        PRIMARY KEY  (id)
-    );";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-    ;
+    Activate::activate();
 }
-register_activation_hook(__FILE__, 'rsq_create_table');
+register_activation_hook(__FILE__, 'activateRandomStoicQuotesPlugin');
 
-function rsq_remove_table()
+function deactivateRandomStoicQuotesPlugin()
 {
-    global $wpdb;
-
-    $table_name = $wpdb->prefix . 'randomstoicquotes';
-
-    $sql = "DROP TABLE IF EXISTS $table_name;";
-
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+    Deactivate::deactivate();
 }
-register_deactivation_hook(__FILE__, 'rsq_remove_table');
+register_deactivation_hook(__FILE__, 'deactivateRandomStoicQuotesPlugin');
 
-// function activateRandomStoicQuotesPlugin()
-// {
-//     Activate::activate();
-// }
-// register_activation_hook(__FILE__, 'activateRandomStoicQuotesPlugin');
+if (!class_exists('WP_List_Table')) {
+    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+}
 
-// function deactivateRandomStoicQuotesPlugin()
-// {
-//     Deactivate::deactivate();
-// }
-// register_deactivation_hook(__FILE__, 'deactivateRandomStoicQuotesPlugin');
-
-
-
-// if (class_exists('Inc\\Init')) {
-//     Inc\Init::register_services();
-// }
+if (class_exists('Inc\\Init')) {
+    Inc\Init::register_services();
+}
