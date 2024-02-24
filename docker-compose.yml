@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  wordpress:
+    container_name: ${WORDPRESS_CONTAINER_NAME}
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ${DATABASE_USER}
+      WORDPRESS_DB_PASSWORD: ${DATABASE_PASSWORD}
+      WORDPRESS_DB_NAME: ${DATABASE_NAME}
+      PHP_EXTENSION_DEBUG: ${DEBUG_MODE}
+      WORDPRESS_DEBUG: ${DEBUG_MODE}
+    volumes:
+      - "./wp-content:/var/www/html/wp-content"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - mysql
+  
+  mysql:
+    container_name: ${DB_CONTAINER_NAME}
+    image: mysql:5.7
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - "mysql:/var/lib/mysql"
+
+networks:
+  back:
+volumes:
+  mysql:
+
