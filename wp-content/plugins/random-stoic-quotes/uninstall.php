@@ -1,6 +1,17 @@
 <?php
 
+// if uninstall.php is not called by WordPress, die
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+    die;
+}
 
-if (!defined('WP_UNINSTALL_PLUGIN')) exit();
+// $option_name = 'wporg_option';
 
-Inc\Base\RandomStoicQuotesDb::removeTable();
+// delete_option( $option_name );
+
+// // for site options in Multisite
+// delete_site_option( $option_name );
+
+// drop a custom database table
+global $wpdb;
+$wpdb->query( "DROP TABLE IF EXISTS wp_randomstoicquotes" );
