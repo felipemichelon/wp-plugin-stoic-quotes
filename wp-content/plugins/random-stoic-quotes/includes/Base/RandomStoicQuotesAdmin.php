@@ -11,6 +11,8 @@ class RandomStoicQuotesAdmin extends BaseController
     public function register()
     {
         add_action('admin_menu', [$this, 'rsq_add_plugin_menu']);
+
+        echo $this->options;
     }
 
     public function rsq_add_plugin_menu()
@@ -47,7 +49,7 @@ class RandomStoicQuotesAdmin extends BaseController
     public function rsq_menu_quotes()
     {
         if (!isset($controll)) {
-            $controll = new RandomStoicQuotesControl();
+            $controll = new RandomStoicQuotesList();
         }
         $controll->prepare_items();
 
@@ -69,7 +71,7 @@ class RandomStoicQuotesAdmin extends BaseController
 
     public function rsq_submenu_configuration()
     {
-        return require_once(plugin_dir_path(dirname(__FILE__, 2)) . "/templates/admin.php");
+        return require_once(plugin_dir_path(dirname(__FILE__, 2)) . "/templates/rsqConfiguration.php");
     }
 
     function rsq_form_quotes()
@@ -163,8 +165,6 @@ class RandomStoicQuotesAdmin extends BaseController
         </div>
     <?php
     }
-
-    
 
     function rsq_handler_form_meta_box($item)
     {

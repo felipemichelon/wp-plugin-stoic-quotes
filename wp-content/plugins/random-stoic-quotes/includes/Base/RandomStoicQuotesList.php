@@ -8,7 +8,7 @@ namespace Inc\Base;
 
 use WP_List_Table;
 
-class RandomStoicQuotesControl extends WP_List_Table
+class RandomStoicQuotesList extends WP_List_Table
 {
     public $options;
     
@@ -16,8 +16,8 @@ class RandomStoicQuotesControl extends WP_List_Table
     public function register()
     {
         parent::__construct(array(
-            'singular' => 'frase',
-            'plural' => 'frases',
+            'singular' => 'quote',
+            'plural' => 'quotes',
         ));
     }
 
@@ -58,9 +58,8 @@ class RandomStoicQuotesControl extends WP_List_Table
     function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox" />', //Renderiza o checkbox ao invés de texto
-            'quote_text' => 'Frase',
-            'quote_author' => 'Autor',
+            'quote_text' => 'Quote',
+            'quote_author' => 'Author',
         );
         return $columns;
     }
@@ -75,7 +74,7 @@ class RandomStoicQuotesControl extends WP_List_Table
         global $wpdb;
         $table_name = $wpdb->prefix . 'randomstoicquotes';
 
-        $per_page = 10; // configuração de quantos registro vão aparecer na página
+        $per_page = get_option('randomstoicquotes')['quotes_per_page']; // configuração de quantos registro vão aparecer na página
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -117,20 +116,18 @@ class RandomStoicQuotesControl extends WP_List_Table
      * @param $item - row(key, value array)
      * @return HTML
     */
-    function column_name($item)
+    function column_quote_text($item)
     {
         // Os links vão para /admin.php?page=[your_plugin_page][&other_params]
         // Observe que é usado o $_REQUEST['page'], então a ação será executada na página atual
         // Perceba também que é usado o $this->_args['singular'] então nesse exemplo
         // ficará algo como &tarefa=2
         $actions = array(
-            'edit' => sprintf('<a href="?page=frase_form&id=%s">%s</a>', $item['id'], 'Editar'),
-            // 'quick-edit' => sprintf('<a class="ca-quick-edit">%s</a>', 'Quick Edit'),
-            'quick-edit' => sprintf('<button type="button" class="ca-quick-edit button-link editinline">%s</button>', 'Quick Edit'),
+            'edit' => sprintf('<a href="?page=rsq_form_add&id=%s">%s</a>', $item['id'], 'Editar'),
             'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], 'Excluir'),
         );
 
-        return sprintf("%s %s",$item['name'], $this->row_actions($actions));
+        return sprintf("%s %s",$item['quote_text'], $this->row_actions($actions));
     }
 
     /**

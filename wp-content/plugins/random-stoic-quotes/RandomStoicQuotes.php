@@ -28,6 +28,11 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
     require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
+//defaul options
+if ( ! defined( 'RSQ_NUMBER_QUOTES_PER_PAGE' ) ) {
+    define( 'RSQ_NUMBER_QUOTES_PER_PAGE', '7' );
+}
+
 function activateRandomStoicQuotesPlugin()
 {
     Activate::activate();
