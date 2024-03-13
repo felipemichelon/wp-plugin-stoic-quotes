@@ -22,6 +22,7 @@ final class Init
     {
         return [
             Base\RandomStoicQuotesAdmin::class,
+            // Base\RandomStoicQuotesControll::class,
         ];
     }
 

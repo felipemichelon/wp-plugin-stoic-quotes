@@ -17,7 +17,7 @@ class Activate
         $sql = "CREATE TABLE " . $table_name . " (
             id int(11) NOT NULL AUTO_INCREMENT,
             quote_text tinytext NOT NULL,
-            quote_auhor VARCHAR(10) NOT NULL,
+            quote_author VARCHAR(100) NOT NULL,
             PRIMARY KEY  (id)
         );";
 

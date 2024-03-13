@@ -1,2 +1,2 @@
-<h3>Menu</h3>
+<h3>Configuration</h3>
 

@@ -8,16 +8,19 @@ namespace Inc\Base;
 
 use WP_List_Table;
 
-class RandomStoicQuotesControll extends WP_List_Table
+class RandomStoicQuotesControl extends WP_List_Table
 {
     public $options;
-    public function __construct()
+    
+
+    public function register()
     {
         parent::__construct(array(
             'singular' => 'frase',
             'plural' => 'frases',
         ));
     }
+
 
     /**
      * [OBRIGATÓRIO]
@@ -72,7 +75,7 @@ class RandomStoicQuotesControll extends WP_List_Table
         global $wpdb;
         $table_name = $wpdb->prefix . 'randomstoicquotes';
 
-        $per_page = 5; // configuração de quantos registro vão aparecer na página
+        $per_page = 10; // configuração de quantos registro vão aparecer na página
 
         $columns = $this->get_columns();
         $hidden = array();
