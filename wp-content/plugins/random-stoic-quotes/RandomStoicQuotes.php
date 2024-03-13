@@ -1,4 +1,7 @@
 <?php
+use Inc\RandomStoicQuotesClasses\RsqActivate;
+use Inc\RandomStoicQuotesClasses\RsqAdmin;
+use Inc\RandomStoicQuotesClasses\RsqDeactivate;
 
 /**
  * @link              https://github.com/felipemichelon/wp-plugin-stoic-quotes
@@ -17,9 +20,6 @@
  * Domain Path:       /languages
  */
 
-use Inc\Base\Activate;
-use Inc\Base\Deactivate;
-
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -35,13 +35,13 @@ if ( ! defined( 'RSQ_NUMBER_QUOTES_PER_PAGE' ) ) {
 
 function activateRandomStoicQuotesPlugin()
 {
-    Activate::activate();
+    Inc\RandomStoicQuotesClasses\RsqActivate::activate();
 }
 register_activation_hook(__FILE__, 'activateRandomStoicQuotesPlugin');
 
 function deactivateRandomStoicQuotesPlugin()
 {
-    Deactivate::deactivate();
+    Inc\RandomStoicQuotesClasses\RsqDeactivate::deactivate();
 }
 register_deactivation_hook(__FILE__, 'deactivateRandomStoicQuotesPlugin');
 
@@ -49,6 +49,6 @@ if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
-if (class_exists('Inc\\Init')) {
-    Inc\Init::register_services();
+if (class_exists('Inc\\RsqInit')) {
+    Inc\RsqInit::register_services();
 }
