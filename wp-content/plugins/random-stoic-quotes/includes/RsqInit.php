@@ -22,9 +22,9 @@ if ( ! class_exists( 'RsqInit' ) ) {
         public static function get_services()
         {
             return [
+                RandomStoicQuotesClasses\RsqController::class,
                 RandomStoicQuotesClasses\RsqAdmin::class,
                 RandomStoicQuotesClasses\RsqConfiguration::class,
-                RandomStoicQuotesClasses\RandomStoicQuotes::class,
             ];
         }
     

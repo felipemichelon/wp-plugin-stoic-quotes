@@ -7,48 +7,16 @@
 namespace Inc\RandomStoicQuotesClasses;
 
 if ( ! class_exists( 'RsqConfiguration' ) ) {
-    class RsqConfiguration extends RsqBaseController
+    class RsqConfiguration extends RsqController
     {
         public $options;
-        private $plugin_basename;
-        private $plugin_slug;
-        private $json_filename;
-        private $channel_id;
     
         public function register() 
         {
-            $this->options          = get_option('randomstoicquotes');
-            $this->plugin_basename  = plugin_basename( __FILE__ );
-            $this->plugin_slug      = "random_stoic_quotes";
-            $this->json_filename    = "yt_teste.json";
-            $this->channel_id    = "23452345234";
+            $this->options = get_option('randomstoicquotes');
     
             add_action( 'admin_init', array( $this, 'page_init' ) );
     
-        }
-    
-        public function page_footer (){
-            return __('Plugin Version', 'my-youtube-recommendation');
-        }
-    
-        public function show_notices () { 
-            $value = isset( $this->options['channel_id'] ) ? esc_attr( $this->options['channel_id'] ) : '';
-    
-            if ( $value == '') {
-                ?>
-                <div class="error notice">
-                <?php echo $this->channel_id ?>
-                    <p><strong><?php echo __( 'My Youtube Recommendation', 'my-youtube-recommendation' ); ?></strong></p>
-                    <p><?php echo __( 'Fill with your Youtube channel ID', 'my-youtube-recommendation' ); ?></p>
-                </div>
-                <?php
-            }
-        }
-    
-        public function add_settings_link ( $links ) {
-            $settings_link = '<a href="admin.php?page=rsq_configuration">' . __('Settings', 'my-youtube-recommendation') . '</a>';
-            array_unshift ( $links, $settings_link );
-            return $links;
         }
     
         public function create_admin_page () {
