@@ -1,7 +1,4 @@
 <?php
-use Inc\RandomStoicQuotesClasses\RsqActivate;
-use Inc\RandomStoicQuotesClasses\RsqAdmin;
-use Inc\RandomStoicQuotesClasses\RsqDeactivate;
 
 /**
  * @link              https://github.com/felipemichelon/wp-plugin-stoic-quotes
