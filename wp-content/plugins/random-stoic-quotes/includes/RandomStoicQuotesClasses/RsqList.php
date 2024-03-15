@@ -94,10 +94,11 @@ if ( ! class_exists( 'RsqList' ) ) {
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'quote_text';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
-    
+            $where = "WHERE quote_active=1";
+            
             // [OBRIGATÓRIO] define $items array
             // Observer que o último argumento é ARRAY_A, então vamos recuperar o array 
-            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name $where ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
     
             // [OBRIGATÓRIO] configura a paginação
             $this->set_pagination_args(array(

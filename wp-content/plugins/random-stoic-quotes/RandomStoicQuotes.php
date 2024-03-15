@@ -29,8 +29,8 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 if ( ! defined( 'RSQ_NUMBER_QUOTES_PER_PAGE' ) ) {
     define( 'RSQ_NUMBER_QUOTES_PER_PAGE', '7' );
 }
-if ( ! defined( 'RSQ_QUOTES_LIST_FILENAME' ) ) {
-    define( 'RSQ_QUOTES_LIST_FILENAME', 'RsqQuotesList.json' );
+if ( ! defined( 'RSQ_DEFAULT_QUOTES' ) ) {
+    define( 'RSQ_DEFAULT_QUOTES', 'RsqDefaultQuotes.json' );
 }
 
 function activateRandomStoicQuotesPlugin()

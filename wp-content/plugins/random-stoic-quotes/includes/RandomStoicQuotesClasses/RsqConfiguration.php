@@ -19,22 +19,6 @@ if ( ! class_exists( 'RsqConfiguration' ) ) {
     
         }
     
-        public function create_admin_page () {
-            ?>
-            <div class="wrap">
-                <h1><?php echo __('My Youtube Recommendation' , 'my-youtube-recommendation'); ?></h1>
-                <form method="post" action="options.php">
-                <?php
-                    // This prints out all hidden setting fields
-                    settings_fields( 'my_yt_rec_options' );
-                    do_settings_sections( 'my-yt-rec-admin' );
-                    submit_button();
-                ?>
-                </form>
-            </div>
-            <?php
-        }
-    
         public function page_init () 
         {   
             register_setting (
@@ -65,6 +49,14 @@ if ( ! class_exists( 'RsqConfiguration' ) ) {
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
             );
+    
+            add_settings_field(
+                'show_default_quotes_id', 
+                __('Show default quotes', 'randomstoicquotes_translate'), 
+                array( $this, 'show_default_quotes_callback' ), 
+                'randomstoicquotes_settings_sections', 
+                'setting_section_id_1'
+            );
         }
         
         public function number_quotes_per_page_callback () {
@@ -80,6 +72,13 @@ if ( ! class_exists( 'RsqConfiguration' ) ) {
             <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[show_on_admin]" id="show_on_admin">
             <?php
         }
+        
+        public function show_default_quotes_callback () {
+            $value = isset( $this->options['show_default_quotes'] ) ? esc_attr( $this->options['show_default_quotes'] ) : "1";
+            ?>
+            <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[show_default_quotes]" id="show_default_quotes">
+            <?php
+        }
     
         public function sanitize ( $input ) {
             
@@ -90,6 +89,9 @@ if ( ! class_exists( 'RsqConfiguration' ) ) {
     
             if ( isset ( $input['show_on_admin'] ) )
                 $new_input['show_on_admin'] = sanitize_text_field($input['show_on_admin']);
+            
+            if ( isset ( $input['show_default_quotes'] ) )
+                $new_input['show_default_quotes'] = sanitize_text_field($input['show_default_quotes']);
     
             return $new_input;
     
