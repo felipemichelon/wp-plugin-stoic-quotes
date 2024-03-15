@@ -32,6 +32,9 @@ if ( ! defined( 'RSQ_NUMBER_QUOTES_PER_PAGE' ) ) {
 if ( ! defined( 'RSQ_DEFAULT_QUOTES' ) ) {
     define( 'RSQ_DEFAULT_QUOTES', 'RsqDefaultQuotes.json' );
 }
+if ( ! defined( 'RSQ_CACHE_QUOTES' ) ) {
+    define( 'RSQ_CACHE_QUOTES', 'CacheQuotes.json' );
+}
 
 function activateRandomStoicQuotesPlugin()
 {

@@ -11,7 +11,6 @@ if (!class_exists('RsqController')) {
     {
         public $plugin_dir_path;
         public $options;
-        public $quotes_list_filename;
         public $table_name;
 
         public function __construct()
@@ -19,7 +18,6 @@ if (!class_exists('RsqController')) {
             global $wpdb;
             $this->plugin_dir_path = plugin_dir_path(dirname(__FILE__, 2));
             $this->options = get_option('randomstoicquotes_number_quotes_per_page');
-            $this->quotes_list_filename = RSQ_DEFAULT_QUOTES;
             $this->table_name = $wpdb->prefix . 'randomstoicquotes';
         }
         public function register()
@@ -53,8 +51,8 @@ if (!class_exists('RsqController')) {
 
         public function getQuotesList()
         {
-            if(file_exists($this->plugin_dir_path .$this->quotes_list_filename)){
-                $list = file_get_contents($this->plugin_dir_path .$this->quotes_list_filename);
+            if(file_exists($this->plugin_dir_path . 'out/' . RSQ_CACHE_QUOTES)){
+                $list = file_get_contents($this->plugin_dir_path . RSQ_DEFAULT_QUOTES);
                 $list = json_decode($list, true);
                 return $list;
             }
@@ -74,7 +72,7 @@ if (!class_exists('RsqController')) {
             $list = $this->getAllQuotesFromDb();
 
             file_put_contents(
-                $this->plugin_dir_path . $this->quotes_list_filename,
+                $this->plugin_dir_path . 'out/' . RSQ_CACHE_QUOTES,
                 json_encode($list)
             );
 

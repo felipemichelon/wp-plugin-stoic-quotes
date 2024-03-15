@@ -11,14 +11,26 @@ if (!class_exists('RsqActivate')) {
     {
         public static function activate()
         {
+            self::setDefaultOptions();
+
             self::createTable();
             self::addDefaultQuotes();
-            // flush_rewrite_rules();
+            flush_rewrite_rules();
 
             if (!isset($control)) {
                 $control = new RsqController();
             }
             $control->cacheQuotes();
+        }
+
+        public static function setDefaultOptions()
+        {
+            $options = array(
+                'show_on_admin'=> "on",
+                'show_default_quotes'=> "on",
+                'quotes_per_page'=> RSQ_NUMBER_QUOTES_PER_PAGE,
+            );
+            update_option('randomstoicquotes', $options);
         }
 
         private static function createTable()
