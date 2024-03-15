@@ -5,13 +5,8 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     die;
 }
 
-// $option_name = 'wporg_option';
-
-// delete_option( $option_name );
-
-// // for site options in Multisite
-// delete_site_option( $option_name );
-
-// drop a custom database table
 global $wpdb;
-$wpdb->query( "DROP TABLE IF EXISTS wp_randomstoicquotes" );
+$plugin_name = "randomstoicquotes";
+$table_name = $wpdb->prefix . $plugin_name;
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
+delete_option($plugin_name);

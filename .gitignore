@@ -26,7 +26,6 @@ wp-config.php
 # Example plugin
 /wp-content/plugins/hello.php
 /wp-content/plugins/akismet/
-/wp-content/plugins/chatbots-automacao/
 
 # Uploads
 /wp-content/uploads/
@@ -51,4 +50,5 @@ wp-config.php
 
 reference-files/
 /wp-content/plugins/stoic-quotes/vendor/
-RsqQuotesList.json
+example/
+RsqDefaultQuotes.json
