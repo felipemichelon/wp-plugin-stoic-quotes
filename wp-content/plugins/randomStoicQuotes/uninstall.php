@@ -1,19 +1,12 @@
 <?php
 
-/**
- * @package RandomStoicQuotes
- */
-
- namespace Inc;
-
-use Inc\RsqController;
-
 // if uninstall.php is not called by WordPress, die
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     die;
 }
 
-$controller = new RsqController();
-
-$controller->dropTable();
-delete_option($controller->default_option_name);
+global $wpdb;
+$plugin_name = "randomstoicquotes";
+$table_name = $wpdb->prefix . $plugin_name;
+$wpdb->query("DROP TABLE IF EXISTS $table_name");
+delete_option($plugin_name);
