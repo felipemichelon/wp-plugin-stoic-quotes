@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'root/stoic-quotes',
+        'name' => 'root/random-stoic-quotes',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'root/stoic-quotes' => array(
+        'root/random-stoic-quotes' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

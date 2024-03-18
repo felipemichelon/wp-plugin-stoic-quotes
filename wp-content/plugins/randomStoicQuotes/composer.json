@@ -1,6 +1,5 @@
 {
-    "name": "root/stoic-quotes",
-    "description": "Plugin that shows stoic sentences randomly",
+    "name": "root/random-stoic-quotes",
     "type": "project",
     "license": "GPLv3",
     "autoload": {

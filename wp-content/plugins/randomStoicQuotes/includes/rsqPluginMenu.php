@@ -4,26 +4,24 @@
  * @package RandomStoicQuotes
  */
 
-namespace Inc\RandomStoicQuotesClasses;
+namespace Inc;
 
-if (!class_exists('RsqAdmin')) {
-    class RsqAdmin extends RsqController
+if (!class_exists('rsqPluginMenu')) {
+    class rsqPluginMenu extends rsqController
     {
         public function register()
         {
-            add_action('admin_menu', [$this, 'rsq_add_plugin_menu']);
-
-            echo $this->options;
+            add_action('admin_menu',  [$this, 'rsqPluginMenu']);
         }
 
-        public function rsq_add_plugin_menu()
+        public function rsqPluginMenu()
         {
             add_menu_page(
                 'Random Stoic Quotes',
                 'Random Stoic Quotes',
                 'manage_options',
                 'random_stoic_quotes',
-                [$this, 'rsq_menu_quotes'],
+                [$this, 'rsq_quotes_list'],
                 'dashicons-format-quote',
                 110
             );
@@ -47,16 +45,12 @@ if (!class_exists('RsqAdmin')) {
             );
         }
 
-        public function rsq_menu_quotes()
+        public function rsq_quotes_list()
         {
-            if (!isset($controll)) {
-                $controll = new rsqList();
+            if (!isset($quotesTable)) {
+                $quotesTable = new rsqQuotesTable();
             }
-            $controll->prepare_items();
-
-            if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete'){
-                $this->cacheQuotes();
-            }
+            $quotesTable->prepare_items();
 
             $message = '';
 ?>
@@ -68,22 +62,15 @@ if (!class_exists('RsqAdmin')) {
 
                 <form id="stoic-quote-table" method="GET">
                     <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-                    <?php $controll->display() ?>
+                    <?php $quotesTable->display() ?>
                 </form>
             </div>
         <?php
         }
 
-        public function rsq_submenu_configuration()
-        {
-            return require_once(plugin_dir_path(dirname(__FILE__, 2)) . "/templates/rsqConfiguration.php");
-        }
-
         function rsq_form_quotes()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'randomstoicquotes';
-
             $message = '';
             $notice = '';
 
@@ -92,6 +79,7 @@ if (!class_exists('RsqAdmin')) {
                 'id' => 0,
                 'quote_text' => '',
                 'quote_author' => '',
+                'category' => 'personal',
             );
 
             // Aqui estamos verificando se o request é post e tem o correto nonce
@@ -103,7 +91,7 @@ if (!class_exists('RsqAdmin')) {
                 $item_valid = $this->rsq_validate_quote($item);
                 if ($item_valid === true) {
                     if ($item['id'] == 0) {
-                        $result = $wpdb->insert($table_name, $item);
+                        $result = $wpdb->insert($this->table_name, $item);
                         $item['id'] = $wpdb->insert_id;
                         if ($result) {
                             $message = 'Item foi salvo com sucesso';
@@ -113,15 +101,15 @@ if (!class_exists('RsqAdmin')) {
                         $item['id'] = 0;
                         $item['quote_text'] = null;
                         $item['quote_author'] = null;
+                        $item['category'] = 'personal';
                     } else {
-                        $result = $wpdb->update($table_name, $item, array('id' => $item['id']));
+                        $result = $wpdb->update($this->table_name, $item, array('id' => $item['id']));
                         if ($result) {
                             $message = 'Item atualizado com sucesso';
                         } else {
                             $notice = 'Ocorreu um erro ao tentar atualizar o item';
                         }
                     }
-                    $this->cacheQuotes();
                 } else {
                     // Se $item_valid não foi true, então contém mensagem de erro
                     $notice = $item_valid;
@@ -130,7 +118,7 @@ if (!class_exists('RsqAdmin')) {
                 // se isso não for postado, carregamos o item para editar ou damos um novo para criar
                 $item = $default;
                 if (isset($_REQUEST['id'])) {
-                    $item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $_REQUEST['id']), ARRAY_A);
+                    $item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table_name WHERE id = %d", $_REQUEST['id']), ARRAY_A);
                     if (!$item) {
                         $item = $default;
                         $notice = 'Item não encontrado';
@@ -172,12 +160,17 @@ if (!class_exists('RsqAdmin')) {
                     </div>
                 </form>
             </div>
-        <?php
+<?php
         }
 
         function rsq_handler_form_meta_box($item)
         {
-            require_once(plugin_dir_path(dirname(__FILE__, 2)) . "/templates/rsqQuoteFormFields.php");
+            require_once($this->plugin_dir_path . "/templates/rsqQuoteFormFields.php");
+        }
+        
+        function rsq_submenu_configuration()
+        {
+            require_once($this->plugin_dir_path . "/templates/rsqConfiguration.php");
         }
 
         function rsq_validate_quote($item)

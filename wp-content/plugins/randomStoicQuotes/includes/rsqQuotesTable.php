@@ -4,22 +4,27 @@
  * @package RandomStoicQuotes
  */
 
-namespace Inc\RandomStoicQuotesClasses;
+namespace Inc;
 
 use WP_List_Table;
 
-if ( ! class_exists( 'RsqList' ) ) {
-    class RsqList extends WP_List_Table
+if (!class_exists('rsqQuotesTable')) {
+    class rsqQuotesTable extends WP_List_Table
     {
+        public $controller;
         public $options;
         
     
-        public function register()
+        public function __construct()
         {
             parent::__construct(array(
                 'singular' => 'quote',
                 'plural' => 'quotes',
             ));
+
+            if(!isset($controller)){
+                $this->controller = new rsqController();
+            }
         }
     
     
@@ -73,9 +78,9 @@ if ( ! class_exists( 'RsqList' ) ) {
         function prepare_items()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'randomstoicquotes';
     
-            $per_page = get_option('randomstoicquotes')['quotes_per_page']; // configuração de quantos registro vão aparecer na página
+            $options_name = $this->controller->default_option_name;
+            $per_page = get_option($options_name)['quotes_per_page']; // configuração de quantos registro vão aparecer na página
     
             $columns = $this->get_columns();
             $hidden = array();
@@ -88,17 +93,20 @@ if ( ! class_exists( 'RsqList' ) ) {
             $this->process_bulk_action();
     
             // Será usado na configuração de paginação
-            $total_items = $wpdb->get_var("SELECT COUNT(id) FROM $table_name");
+            $total_items = $wpdb->get_var("SELECT COUNT(*) FROM " . $this->controller->table_name);
     
             // Prepara os parâmetros da query, como página atual, "order by" e direção de ordenação.
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'quote_text';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
-            $where = "WHERE quote_active=1";
+            $where = " WHERE quote_active=1";
             
             // [OBRIGATÓRIO] define $items array
             // Observer que o último argumento é ARRAY_A, então vamos recuperar o array 
-            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name $where ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+            $table_name = $this->controller->table_name;
+
+            $sql = "SELECT * FROM $table_name $where ORDER BY $orderby $order LIMIT %d OFFSET %d";
+            $this->items = $wpdb->get_results($wpdb->prepare($sql, $per_page, $paged), ARRAY_A);
     
             // [OBRIGATÓRIO] configura a paginação
             $this->set_pagination_args(array(
@@ -143,13 +151,13 @@ if ( ! class_exists( 'RsqList' ) ) {
         function process_bulk_action()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'randomstoicquotes';
     
             if ('delete' === $this->current_action()) {
                 $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
                 if (is_array($ids)) $ids = implode(',', $ids);
     
                 if (!empty($ids)) {
+                    $table_name = $this->controller->table_name;
                     $wpdb->query("DELETE FROM $table_name WHERE id IN($ids)");
                 }
             }
