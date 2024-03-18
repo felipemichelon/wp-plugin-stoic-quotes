@@ -55,6 +55,14 @@ if (!class_exists('rsqConfiguration')) {
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
             );
+    
+            add_settings_field(
+                'shortcode_id', 
+                __('Shortcode use', 'randomstoicquotes_translate'), 
+                array( $this, 'shortcode_use_callback' ), 
+                'randomstoicquotes_settings_sections', 
+                'setting_section_id_1'
+            );
         }
 
         public function number_quotes_per_page_callback () {
@@ -77,6 +85,14 @@ if (!class_exists('rsqConfiguration')) {
             <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[show_default_quotes]" id="show_default_quotes">
             <?php
         }
+        
+        public function shortcode_use_callback () {
+            $value = isset( $this->rsq_options['shortcode_use_option'] ) ? esc_attr( $this->rsq_options['shortcode_use_option'] ) : "1";
+            ?>
+            <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[shortcode_use_option]" id="shortcode_use_option">
+            <label for="shortcode_use_option">To use add the shortcode block on post page: <strong>[random_stoic_quote]</strong></label>
+            <?php
+        }
     
         public function sanitize ( $input ) {
             
@@ -90,6 +106,9 @@ if (!class_exists('rsqConfiguration')) {
             
             if ( isset ( $input['show_default_quotes'] ) )
                 $new_input['show_default_quotes'] = sanitize_text_field($input['show_default_quotes']);
+            
+            if ( isset ( $input['shortcode_use_option'] ) )
+                $new_input['shortcode_use_option'] = sanitize_text_field($input['shortcode_use_option']);
     
             return $new_input;
     

@@ -34,6 +34,16 @@ if (!class_exists('rsqController')) {
             );
         }
 
+        public function getRandomStoicQuoteRandomly()
+        {
+            $list = $this->getAllQuotesFromTable(1);
+            if (empty($list)) {
+                return $this;
+            }
+            
+            return $list[mt_rand(0, count($list) - 1)];
+        }
+
         public function createTable()
         {
             $sql = "CREATE TABLE IF NOT EXISTS " . $this->table_name . " (
