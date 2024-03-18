@@ -30,6 +30,7 @@ if (!class_exists('rsqController')) {
             $this->default_options = array(
                 'show_on_admin'=> 'on',
                 'show_default_quotes'=> 'on',
+                'shortcode_use_option'=> 'on',
                 'quotes_per_page'=> RSQ_NUMBER_QUOTES_PER_PAGE,
             );
         }
