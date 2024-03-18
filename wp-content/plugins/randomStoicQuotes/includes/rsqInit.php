@@ -23,9 +23,9 @@ if (!class_exists('rsqInit')) {
         {
             return [
                 randomStoicQuotes::class,
-                rsqActivate::class,
                 rsqPluginMenu::class,
                 rsqConfiguration::class,
+                rsqShortcode::class,
             ];
         }
 
