@@ -49,5 +49,5 @@ wp-config.php
 #/wp-content/themes
 
 reference-files/
-/wp-content/plugins/random-stoic-quotes/out/
+/wp-content/plugins/plugin-check
 example/
