@@ -121,7 +121,8 @@ if (!class_exists('rsqController')) {
             $where = "";
             $sql = "SELECT * FROM $this->table_name";
             if($quote_active){
-                $where = " WHERE quote_active=$quote_active";
+                $lang = get_locale();
+                $where = " WHERE quote_active=$quote_active AND lang=\"$lang\" OR lang IS NULL";
             }
             if($where != ""){
                 $where .= ";";
