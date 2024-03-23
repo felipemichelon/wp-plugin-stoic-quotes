@@ -18,7 +18,7 @@ if (!class_exists('rsqPluginMenu')) {
         {
             add_menu_page(
                 'Random Stoic Quotes',
-                'Random Stoic Quotes',
+                __('Random Stoic Quotes', 'random-stoic-quotes'),
                 'manage_options',
                 'random_stoic_quotes',
                 [$this, 'rsq_quotes_list'],
@@ -29,7 +29,7 @@ if (!class_exists('rsqPluginMenu')) {
             add_submenu_page(
                 'random_stoic_quotes',
                 'Add Quote',
-                'Add Quote',
+                __('Add Quote', 'random-stoic-quotes'),
                 'manage_options',
                 'rsq_form_add',
                 [$this, 'rsq_form_quotes'],
@@ -38,7 +38,7 @@ if (!class_exists('rsqPluginMenu')) {
             add_submenu_page(
                 'random_stoic_quotes',
                 'Configuration',
-                'Configuration',
+                __('Configuration', 'random-stoic-quotes'),
                 'manage_options',
                 'rsq_configuration',
                 [$this, 'rsq_submenu_configuration'],
@@ -56,7 +56,7 @@ if (!class_exists('rsqPluginMenu')) {
 ?>
             <div class="wrap">
                 <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-                <h2>Random Stoic Quotes <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=rsq_form_add'); ?>">Add Quote</a>
+                <h2><?php echo __('Random Stoic Quotes', 'random-stoic-quotes') ?> <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=rsq_form_add'); ?>"><?php echo __('Add Sentence', 'random-stoic-quotes') ?></a>
                 </h2>
                 <?php echo $message; ?>
 
@@ -94,9 +94,9 @@ if (!class_exists('rsqPluginMenu')) {
                         $result = $wpdb->insert($this->table_name, $item);
                         $item['id'] = $wpdb->insert_id;
                         if ($result) {
-                            $message = 'Item foi salvo com sucesso';
+                            $message = __('Sentence saved successfully', 'random-stoic-quotes');
                         } else {
-                            $notice = 'Ocorreu um erro ao tentar salvar o item';
+                            $notice = __('Error trying to save the item', 'random-stoic-quotes');
                         }
                         $item['id'] = 0;
                         $item['quote_text'] = null;
@@ -105,9 +105,9 @@ if (!class_exists('rsqPluginMenu')) {
                     } else {
                         $result = $wpdb->update($this->table_name, $item, array('id' => $item['id']));
                         if ($result) {
-                            $message = 'Item atualizado com sucesso';
+                            $message = __('Updated successfully', 'random-stoic-quotes');
                         } else {
-                            $notice = 'Ocorreu um erro ao tentar atualizar o item';
+                            $notice = __('Error trying to update the item', 'random-stoic-quotes');
                         }
                     }
                 } else {
@@ -121,16 +121,16 @@ if (!class_exists('rsqPluginMenu')) {
                     $item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $this->table_name WHERE id = %d", $_REQUEST['id']), ARRAY_A);
                     if (!$item) {
                         $item = $default;
-                        $notice = 'Item não encontrado';
+                        $notice = __('Item not found', 'random-stoic-quotes');
                     }
                 }
             }
-            add_meta_box('rsq_form_meta_box', 'Quotes data', [$this, 'rsq_handler_form_meta_box'], 'random_stoic_quotes_meta_box', 'normal', 'default');
+            add_meta_box('rsq_form_meta_box', __('Fields', 'random-stoic-quotes'), [$this, 'rsq_handler_form_meta_box'], 'random_stoic_quotes_meta_box', 'normal', 'default');
 
         ?>
             <div class="wrap">
                 <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-                <h2>Quote <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=random_stoic_quotes'); ?>">Voltar para a lista</a>
+                <h2>Quote <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=random_stoic_quotes'); ?>"><?php echo __('Back to list', 'random-stoic-quotes') ?></a>
                 </h2>
 
                 <?php if (!empty($notice)) : ?>
@@ -177,7 +177,7 @@ if (!class_exists('rsqPluginMenu')) {
         {
             $messages = array();
 
-            if (empty($item['quote_text'])) $messages[] = 'Nome é obrigatório';
+            if (empty($item['quote_text'])) $messages[] = __('Name is mandatory', 'random-stoic-quotes');
 
             if (empty($messages)) return true;
             return implode('<br />', $messages);

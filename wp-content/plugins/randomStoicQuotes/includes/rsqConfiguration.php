@@ -27,14 +27,14 @@ if (!class_exists('rsqConfiguration')) {
     
             add_settings_section (  
                 'setting_section_id_1', 
-                __('General Settings', 'randomstoicquotes_translate'), 
+                __('General Settings', 'random-stoic-quotes'), 
                 null, 
                 'randomstoicquotes_settings_sections'
             );
     
             add_settings_field(
                 'number_quotes_per_page_id', 
-                __('Number of quotes per page', 'randomstoicquotes_translate'), 
+                __('Number of quotes per page', 'random-stoic-quotes'), 
                 array( $this, 'number_quotes_per_page_callback' ), 
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
@@ -42,7 +42,7 @@ if (!class_exists('rsqConfiguration')) {
     
             add_settings_field(
                 'show_on_admin_id', 
-                __('Show on admin', 'randomstoicquotes_translate'), 
+                __('Show on admin', 'random-stoic-quotes'), 
                 array( $this, 'show_on_admin_callback' ), 
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
@@ -50,7 +50,7 @@ if (!class_exists('rsqConfiguration')) {
     
             add_settings_field(
                 'show_default_quotes_id', 
-                __('Show default quotes', 'randomstoicquotes_translate'), 
+                __('Show default quotes', 'random-stoic-quotes'), 
                 array( $this, 'show_default_quotes_callback' ), 
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
@@ -58,7 +58,7 @@ if (!class_exists('rsqConfiguration')) {
     
             add_settings_field(
                 'shortcode_id', 
-                __('Shortcode use', 'randomstoicquotes_translate'), 
+                __('Shortcode use', 'random-stoic-quotes'), 
                 array( $this, 'shortcode_use_callback' ), 
                 'randomstoicquotes_settings_sections', 
                 'setting_section_id_1'
@@ -90,7 +90,7 @@ if (!class_exists('rsqConfiguration')) {
             $value = isset( $this->rsq_options['shortcode_use_option'] ) ? esc_attr( $this->rsq_options['shortcode_use_option'] ) : "1";
             ?>
             <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[shortcode_use_option]" id="shortcode_use_option">
-            <label for="shortcode_use_option">To use add the shortcode block on post page: <strong>[random_stoic_quote]</strong></label>
+            <label for="shortcode_use_option"><?php echo __('to use as shortcode add the following block on post page', 'random-stoic-quotes') ?>: <strong>[random_stoic_quote]</strong></label>
             <?php
         }
     

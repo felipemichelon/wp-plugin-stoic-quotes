@@ -64,8 +64,8 @@ if (!class_exists('rsqQuotesTable')) {
         function get_columns()
         {
             $columns = array(
-                'quote_text' => 'Quote',
-                'quote_author' => 'Author',
+                'quote_text' => __('Quote', 'random-stoic-quotes'),
+                'quote_author' => __('Author', 'random-stoic-quotes'),
             );
             return $columns;
         }
@@ -99,7 +99,7 @@ if (!class_exists('rsqQuotesTable')) {
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'quote_text';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
-            $where = " WHERE quote_active=1";
+            $where = " WHERE quote_active=1 and lang=" . get_locale();
             
             // [OBRIGATÓRIO] define $items array
             // Observer que o último argumento é ARRAY_A, então vamos recuperar o array 
@@ -133,8 +133,8 @@ if (!class_exists('rsqQuotesTable')) {
             // Perceba também que é usado o $this->_args['singular'] então nesse exemplo
             // ficará algo como &tarefa=2
             $actions = array(
-                'edit' => sprintf('<a href="?page=rsq_form_add&id=%s">%s</a>', $item['id'], 'Editar'),
-                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], 'Excluir'),
+                'edit' => sprintf('<a href="?page=rsq_form_add&id=%s">%s</a>', $item['id'], __('Edit', 'random-stoic-quotes')),
+                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Delete', 'random-stoic-quotes')),
             );
     
             return sprintf("%s %s",$item['quote_text'], $this->row_actions($actions));
