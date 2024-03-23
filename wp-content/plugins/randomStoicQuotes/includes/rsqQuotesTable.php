@@ -64,8 +64,8 @@ if (!class_exists('rsqQuotesTable')) {
         function get_columns()
         {
             $columns = array(
-                'quote_text' => 'Quote',
-                'quote_author' => 'Author',
+                'quote_text' => __('Quote', 'random-stoic-quotes'),
+                'quote_author' => __('Author', 'random-stoic-quotes'),
             );
             return $columns;
         }
@@ -92,14 +92,15 @@ if (!class_exists('rsqQuotesTable')) {
             // [OPCIONAL] Processa ações em passa caso existam
             $this->process_bulk_action();
     
+            $where = " WHERE quote_active=1 AND lang=\"".get_locale()."\" OR lang IS NULL";
+
             // Será usado na configuração de paginação
-            $total_items = $wpdb->get_var("SELECT COUNT(*) FROM " . $this->controller->table_name);
+            $total_items = $wpdb->get_var("SELECT COUNT(*) FROM " . $this->controller->table_name . $where);
     
             // Prepara os parâmetros da query, como página atual, "order by" e direção de ordenação.
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'quote_text';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
-            $where = " WHERE quote_active=1";
             
             // [OBRIGATÓRIO] define $items array
             // Observer que o último argumento é ARRAY_A, então vamos recuperar o array 
@@ -133,8 +134,8 @@ if (!class_exists('rsqQuotesTable')) {
             // Perceba também que é usado o $this->_args['singular'] então nesse exemplo
             // ficará algo como &tarefa=2
             $actions = array(
-                'edit' => sprintf('<a href="?page=rsq_form_add&id=%s">%s</a>', $item['id'], 'Editar'),
-                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], 'Excluir'),
+                'edit' => sprintf('<a href="?page=rsq_form_add&id=%s">%s</a>', $item['id'], __('Edit', 'random-stoic-quotes')),
+                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Delete', 'random-stoic-quotes')),
             );
     
             return sprintf("%s %s",$item['quote_text'], $this->row_actions($actions));

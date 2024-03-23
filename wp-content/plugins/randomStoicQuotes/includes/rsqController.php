@@ -12,7 +12,6 @@ if (!class_exists('rsqController')) {
         public $plugin_basename;
         public $plugin_dir_path;
         public $default_quotes_filename;
-        public $cached_quotes_filename;
         public $table_name;
         public $default_option_name;
         public $default_options;
@@ -21,7 +20,6 @@ if (!class_exists('rsqController')) {
             $this->plugin_basename = RSQ_BASENAME;
             $this->plugin_dir_path = RSQ_DIR_PATH;
             $this->default_quotes_filename = RSQ_DEFAULT_QUOTES_FILENAME;
-            $this->cached_quotes_filename = RSQ_CACHED_QUOTES_FILENAME;
 
             global $wpdb;
             $this->table_name = $wpdb->prefix . RSQ_MAIN_FILE_NAME;
@@ -51,6 +49,7 @@ if (!class_exists('rsqController')) {
                 id int(11) NOT NULL AUTO_INCREMENT,
                 quote_text tinytext NOT NULL,
                 quote_author VARCHAR(100) NOT NULL,
+                lang VARCHAR(10),
                 quote_active TINYINT DEFAULT 1,
                 category VARCHAR(50),
                 PRIMARY KEY  (id)
@@ -67,7 +66,7 @@ if (!class_exists('rsqController')) {
             $wpdb->query("DROP TABLE IF EXISTS $this->table_name");
         }
 
-        public function insertItemToTable($quote_text, $quote_author, $quote_active = 1, $category = '')
+        public function insertItemToTable($quote_text, $quote_author, $lang, $quote_active = 1, $category = '')
         {
             global $wpdb;
             if($this->getItemFromTable(null, $quote_text, $quote_author, $quote_active, $category)){
@@ -77,6 +76,7 @@ if (!class_exists('rsqController')) {
             $itemToAdd = array(
                 'quote_text' => $quote_text,
                 'quote_author' => $quote_author,
+                'lang' => $lang,
                 'quote_active' => $quote_active,
                 'category' => $category,
             );
@@ -121,7 +121,8 @@ if (!class_exists('rsqController')) {
             $where = "";
             $sql = "SELECT * FROM $this->table_name";
             if($quote_active){
-                $where = " WHERE quote_active=$quote_active";
+                $lang = get_locale();
+                $where = " WHERE quote_active=$quote_active AND lang=\"$lang\" OR lang IS NULL";
             }
             if($where != ""){
                 $where .= ";";
@@ -139,6 +140,7 @@ if (!class_exists('rsqController')) {
                 $this->insertItemToTable(
                     $quote['quote_text'],
                     $quote['quote_author'],
+                    $quote['lang'],
                     1,
                     'default'
                 );
@@ -175,25 +177,6 @@ if (!class_exists('rsqController')) {
             }
             return $this;
         }
-
-        // public function getCachedQuotes()
-        // {
-        //     $filename = $this->plugin_dir_path . $this->cached_quotes_filename;
-        //     if(!file_exists($filename)){
-        //         $this->updateCachedQuotesFile();
-        //     }
-        //     return $this->readFile($filename);
-        // }
-
-        // public function updateCachedQuotesFile()
-        // {
-        //     $quotesList = $this->getAllQuotesFromTable();
-        //     file_put_contents(
-        //         $this->plugin_dir_path . $this->cached_quotes_filename,
-        //         json_encode($quotesList, JSON_PRETTY_PRINT)
-        //     );
-        //     return $this;
-        // }
 
         private function readFile($filename)
         {

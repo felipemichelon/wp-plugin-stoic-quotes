@@ -37,7 +37,6 @@ if (!defined('RSQ_MAIN_FILE_NAME')) {
     define('RSQ_MAIN_FILE_NAME', strtolower(plugin_basename(dirname(__FILE__))));
 }
 
-//defaul options
 if (!defined('RSQ_NUMBER_QUOTES_PER_PAGE')) {
     define('RSQ_NUMBER_QUOTES_PER_PAGE', '7');
 }
@@ -69,6 +68,12 @@ function deactivateRandomStoicQuotesPlugin()
     $randomStoicQuotes->deactivate();
 }
 register_deactivation_hook(__FILE__, 'deactivateRandomStoicQuotesPlugin');
+
+load_plugin_textdomain(
+    'random-stoic-quotes',
+    false,
+    'randomStoicQuotes' .'/languages/'
+);
 
 if(class_exists('Inc\\rsqInit')){
     Inc\rsqInit::register_services();
