@@ -43,9 +43,6 @@ if (!defined('RSQ_NUMBER_QUOTES_PER_PAGE')) {
 if (!defined('RSQ_DEFAULT_QUOTES_FILENAME')) {
     define('RSQ_DEFAULT_QUOTES_FILENAME', 'defaultQuotes.json');
 }
-if (!defined('RSQ_CACHED_QUOTES_FILENAME')) {
-    define('RSQ_CACHED_QUOTES_FILENAME', 'cachedQuotes.json');
-}
 
 if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
