@@ -37,10 +37,10 @@ if (!class_exists('rsqController')) {
         {
             $list = $this->getAllQuotesFromTable(1);
             if (empty($list)) {
-                return $this;
+                return [];
             }
             
-            return $list[mt_rand(0, count($list) - 1)];
+            return $list[wp_rand(0, count($list) - 1)];
         }
 
         public function createTable()
@@ -63,7 +63,7 @@ if (!class_exists('rsqController')) {
         public function dropTable()
         {
             global $wpdb;
-            $wpdb->query("DROP TABLE IF EXISTS $this->table_name");
+            $wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %s", $this->table_name));
         }
 
         public function insertItemToTable($quote_text, $quote_author, $lang, $quote_active = 1, $category = '')
@@ -88,7 +88,6 @@ if (!class_exists('rsqController')) {
         {
             global $wpdb;
             $where = "";
-            $select = "SELECT * FROM $this->table_name";
 
             if ($item_id){
                 $where = " WHERE id=$item_id";
@@ -111,14 +110,20 @@ if (!class_exists('rsqController')) {
             }
             $where .= ($where == "") ? $where : ";";
             
-            $sqlPrepared = $select . $where;
-            return $wpdb->get_row($sqlPrepared);
+            return $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT * FROM %s%s",
+                    $this->table_name,
+                    $where
+                )
+            );
         }
 
         public function getAllQuotesFromTable($quote_active = null)
         {
             global $wpdb;
             $where = "";
+
             $sql = "SELECT * FROM $this->table_name";
             if($quote_active){
                 $lang = get_locale();
@@ -126,10 +131,11 @@ if (!class_exists('rsqController')) {
             }
             if($where != ""){
                 $where .= ";";
-                $sql = $sql . $where;
+                $sql .= $where;
             }
 
             return $wpdb->get_results($sql, ARRAY_A);
+
         }
 
         public function inserDefaultQuotesToTable()

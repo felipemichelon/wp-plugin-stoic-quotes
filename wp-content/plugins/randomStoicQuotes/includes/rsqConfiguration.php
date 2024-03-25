@@ -68,7 +68,7 @@ if (!class_exists('rsqConfiguration')) {
         public function number_quotes_per_page_callback () {
             $value = isset( $this->rsq_options['quotes_per_page'] ) ? esc_attr( $this->rsq_options['quotes_per_page'] ) : (int)RSQ_NUMBER_QUOTES_PER_PAGE;
             ?>
-            <input type="number" min="1" id="quotes_per_page" name="randomstoicquotes[quotes_per_page]" value="<?php echo $value ?>" class="small-text">
+            <input type="number" min="1" id="quotes_per_page" name="randomstoicquotes[quotes_per_page]" value="<?php echo esc_attr($value); ?>" class="small-text">
             <?php
         }
         
@@ -90,7 +90,7 @@ if (!class_exists('rsqConfiguration')) {
             $value = isset( $this->rsq_options['shortcode_use_option'] ) ? esc_attr( $this->rsq_options['shortcode_use_option'] ) : "1";
             ?>
             <input <?php echo ($value == "on") ? 'checked' : '' ?> class="form-check-input" type="checkbox" name="randomstoicquotes[shortcode_use_option]" id="shortcode_use_option">
-            <label for="shortcode_use_option"><?php echo __('to use as shortcode add the following block on post page', 'random-stoic-quotes') ?>: <strong>[random_stoic_quote]</strong></label>
+            <label for="shortcode_use_option"><?php echo esc_attr(__('to use as shortcode add the following block on post page', 'random-stoic-quotes')); ?>: <strong>[random_stoic_quote]</strong></label>
             <?php
         }
     

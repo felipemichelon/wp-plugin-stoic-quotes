@@ -92,10 +92,12 @@ if (!class_exists('rsqQuotesTable')) {
             // [OPCIONAL] Processa ações em passa caso existam
             $this->process_bulk_action();
     
-            $where = " WHERE quote_active=1 AND lang=\"".get_locale()."\" OR lang IS NULL";
+            $where = " WHERE quote_active=1 AND (lang=\"".get_locale()."\" OR lang IS NULL)";
+
+            $sql = "SELECT count(*) FROM wp_randomstoicquotes" . $where;
 
             // Será usado na configuração de paginação
-            $total_items = $wpdb->get_var("SELECT COUNT(*) FROM " . $this->controller->table_name . $where);
+            $total_items = $wpdb->get_var($sql);
     
             // Prepara os parâmetros da query, como página atual, "order by" e direção de ordenação.
             $paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;

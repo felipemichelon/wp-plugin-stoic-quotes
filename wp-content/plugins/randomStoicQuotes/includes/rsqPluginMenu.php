@@ -56,12 +56,12 @@ if (!class_exists('rsqPluginMenu')) {
 ?>
             <div class="wrap">
                 <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-                <h2><?php echo __('Random Stoic Quotes', 'random-stoic-quotes') ?> <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=rsq_form_add'); ?>"><?php echo __('Add Sentence', 'random-stoic-quotes') ?></a>
+                <h2><?php echo esc_attr(__('Random Stoic Quotes', 'random-stoic-quotes')); ?> <a class="add-new-h2" href="<?php echo esc_attr(get_admin_url(get_current_blog_id(), 'admin.php?page=rsq_form_add')); ?>"><?php echo esc_attr(__('Add Sentence', 'random-stoic-quotes')); ?></a>
                 </h2>
-                <?php echo $message; ?>
+                <?php echo esc_attr($message); ?>
 
                 <form id="stoic-quote-table" method="GET">
-                    <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                    <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']); ?>" />
                     <?php $quotesTable->display() ?>
                 </form>
             </div>
@@ -130,24 +130,24 @@ if (!class_exists('rsqPluginMenu')) {
         ?>
             <div class="wrap">
                 <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-                <h2>Quote <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=random_stoic_quotes'); ?>"><?php echo __('Back to list', 'random-stoic-quotes') ?></a>
+                <h2>Quote <a class="add-new-h2" href="<?php echo esc_attr(get_admin_url(get_current_blog_id(), 'admin.php?page=random_stoic_quotes')); ?>"><?php echo esc_attr(__('Back to list', 'random-stoic-quotes')); ?></a>
                 </h2>
 
                 <?php if (!empty($notice)) : ?>
                     <div id="notice" class="error">
-                        <p><?php echo $notice ?></p>
+                        <p><?php echo esc_attr($notice); ?></p>
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($message)) : ?>
                     <div id="message" class="updated">
-                        <p><?php echo $message ?></p>
+                        <p><?php echo esc_attr($message); ?></p>
                     </div>
                 <?php endif; ?>
 
                 <form id="form" method="POST">
-                    <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(basename(__FILE__)) ?>" />
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce(basename(__FILE__))); ?>" />
                     <?php /* Observação: Nós estamos armazenando id para veriricar se será adicionado ou atualizado */ ?>
-                    <input type="hidden" name="id" value="<?php echo $item['id'] ?>" />
+                    <input type="hidden" name="id" value="<?php echo esc_attr($item['id']); ?>" />
 
                     <div class="metabox-holder" id="poststuff">
                         <div id="post-body">
