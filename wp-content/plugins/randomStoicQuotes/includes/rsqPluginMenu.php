@@ -59,7 +59,6 @@ if (!class_exists('rsqPluginMenu')) {
                 <h2><?php echo esc_attr(__('Random Stoic Quotes', 'random-stoic-quotes')); ?> <a class="add-new-h2" href="<?php echo esc_attr(get_admin_url(get_current_blog_id(), 'admin.php?page=rsq_form_add')); ?>"><?php echo esc_attr(__('Add Sentence', 'random-stoic-quotes')); ?></a>
                 </h2>
                 <?php echo esc_attr($message); ?>
-
                 <form id="stoic-quote-table" method="GET">
                     <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']); ?>" />
                     <?php $quotesTable->display() ?>

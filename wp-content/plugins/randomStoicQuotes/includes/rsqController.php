@@ -31,6 +31,10 @@ if (!class_exists('rsqController')) {
                 'shortcode_use_option'=> 'on',
                 'quotes_per_page'=> RSQ_NUMBER_QUOTES_PER_PAGE,
             );
+
+            if($this->thereIsNotSavedQuotes()){
+                $this->inserDefaultQuotesToTable();
+            }
         }
 
         public function getRandomStoicQuoteRandomly()
@@ -135,7 +139,6 @@ if (!class_exists('rsqController')) {
             }
 
             return $wpdb->get_results($sql, ARRAY_A);
-
         }
 
         public function inserDefaultQuotesToTable()
@@ -152,6 +155,11 @@ if (!class_exists('rsqController')) {
                 );
             }
             return $this;
+        }
+
+        public function thereIsNotSavedQuotes()
+        {
+            return empty($this->getAllQuotesFromTable(1));
         }
         
         public function getDefaultOptions()

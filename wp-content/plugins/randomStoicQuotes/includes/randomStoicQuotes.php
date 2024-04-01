@@ -18,7 +18,6 @@ if (!class_exists('randomStoicQuotes')) {
         {
             $this->createTable();
             $this->setDefaultOptions();
-            $this->inserDefaultQuotesToTable();
         }
 
         public function deactivate()
@@ -29,6 +28,9 @@ if (!class_exists('randomStoicQuotes')) {
         public function showRandomStoicQuotesOnAdmin()
         {
             $options = get_option($this->default_option_name);
+            if(!$options){
+                return $this;
+            }
             $this->updateDefaultQuoteStatus(array_key_exists('show_default_quotes', $options));
             
             if (!array_key_exists('show_on_admin', $options)){
