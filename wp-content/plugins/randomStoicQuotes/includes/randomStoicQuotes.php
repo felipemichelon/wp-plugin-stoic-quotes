@@ -21,6 +21,11 @@ if (!class_exists('randomStoicQuotes')) {
             $this->inserDefaultQuotesToTable();
         }
 
+        public function deactivate()
+        {
+            flush_rewrite_rules();
+        }
+
         public function showRandomStoicQuotesOnAdmin()
         {
             $options = get_option($this->default_option_name);
