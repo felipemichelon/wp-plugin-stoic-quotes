@@ -18,6 +18,7 @@ if (!class_exists('randomStoicQuotes')) {
         {
             $this->createTable();
             $this->setDefaultOptions();
+            $this->insertDefaultQuotesToTable();
         }
 
         public function deactivate()

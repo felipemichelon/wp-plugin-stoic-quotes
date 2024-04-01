@@ -31,10 +31,6 @@ if (!class_exists('rsqController')) {
                 'shortcode_use_option'=> 'on',
                 'quotes_per_page'=> RSQ_NUMBER_QUOTES_PER_PAGE,
             );
-
-            if($this->thereIsNotSavedQuotes()){
-                $this->inserDefaultQuotesToTable();
-            }
         }
 
         public function getRandomStoicQuoteRandomly()
@@ -114,13 +110,8 @@ if (!class_exists('rsqController')) {
             }
             $where .= ($where == "") ? $where : ";";
             
-            return $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT * FROM %s%s",
-                    $this->table_name,
-                    $where
-                )
-            );
+            $sql = $this->table_name . $where;
+            return $wpdb->get_row("SELECT * FROM $sql");
         }
 
         public function getAllQuotesFromTable($quote_active = null)
@@ -141,7 +132,7 @@ if (!class_exists('rsqController')) {
             return $wpdb->get_results($sql, ARRAY_A);
         }
 
-        public function inserDefaultQuotesToTable()
+        public function insertDefaultQuotesToTable()
         {
             $filename = $this->plugin_dir_path . $this->default_quotes_filename;
             $defaultQuotes = $this->readFile($filename);
