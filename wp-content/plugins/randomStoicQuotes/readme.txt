@@ -1,6 +1,7 @@
 === Random Stoic Quotes ===
 Author: Felipe Michelon
-Requires at least: 6.4
+Requires at least: 6.5
+Tested up to: 6.5
 Stable tag: 1.0.0
 Requires PHP: 8.0
 License: GPLv3 or later

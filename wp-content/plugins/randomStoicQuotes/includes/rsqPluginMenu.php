@@ -61,7 +61,7 @@ if (!class_exists('rsqPluginMenu')) {
                 <?php echo esc_attr($message); ?>
                 <form id="stoic-quote-table" method="GET">
                     <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']); ?>" />
-                    <?php $quotesTable->display() ?>
+                    <?php esc_html($quotesTable->display()) ?>
                 </form>
             </div>
         <?php
@@ -73,7 +73,6 @@ if (!class_exists('rsqPluginMenu')) {
             $message = '';
             $notice = '';
 
-            // Esse é o $item padrão que será usado para novos registros
             $default = array(
                 'id' => 0,
                 'quote_text' => '',
@@ -81,8 +80,10 @@ if (!class_exists('rsqPluginMenu')) {
                 'category' => 'personal',
             );
 
-            // Aqui estamos verificando se o request é post e tem o correto nonce
-            if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
+            $nonce = sanitize_text_field($_REQUEST['nonce']);
+            $nonce = wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__));
+
+            if ($nonce) {
                 // Combina nosso item padrão com os parâmetros do request
                 $item = shortcode_atts($default, $_REQUEST);
                 // Valida os dados, e se todos estão ok salva o item no banco

@@ -45,30 +45,50 @@ if (!class_exists('rsqController')) {
 
         public function createTable()
         {
-            $sql = "CREATE TABLE IF NOT EXISTS " . $this->table_name . " (
-                id int(11) NOT NULL AUTO_INCREMENT,
-                quote_text tinytext NOT NULL,
-                quote_author VARCHAR(100) NOT NULL,
-                lang VARCHAR(10),
-                quote_active TINYINT DEFAULT 1,
-                category VARCHAR(50),
-                PRIMARY KEY  (id)
-            );";
+            global $wpdb;
+            // $sql = "CREATE TABLE IF NOT EXISTS " . $this->table_name . " (
+            //     id int(11) NOT NULL AUTO_INCREMENT,
+            //     quote_text tinytext NOT NULL,
+            //     quote_author VARCHAR(100) NOT NULL,
+            //     lang VARCHAR(10),
+            //     quote_active TINYINT DEFAULT 1,
+            //     category VARCHAR(50),
+            //     PRIMARY KEY  (id)
+            // );";
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($sql);
+            dbDelta($wpdb->prepare('CREATE TABLE IF NOT EXISTS "%s" (
+                    id int(11) NOT NULL AUTO_INCREMENT,
+                    quote_text tinytext NOT NULL,
+                    quote_author VARCHAR(100) NOT NULL,
+                    lang VARCHAR(10),
+                    quote_active TINYINT DEFAULT 1,
+                    category VARCHAR(50),
+                    PRIMARY KEY  (id)
+                );'),
+                sanitize_text_field($this->table_name)
+            );
+            // dbDelta($sql);
             return $this;
         }
 
         public function dropTable()
         {
             global $wpdb;
+            $this->table_name = sanitize_text_field($this->table_name);
             $wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %s", $this->table_name));
         }
 
         public function insertItemToTable($quote_text, $quote_author, $lang, $quote_active = 1, $category = '')
         {
             global $wpdb;
+
+            $quote_text = sanitize_text_field($quote_text);
+            $quote_author = sanitize_text_field($quote_author);
+            $lang = sanitize_text_field($lang);
+            $quote_active = sanitize_text_field($quote_active);
+            $category = sanitize_text_field($category);
+
             if($this->getItemFromTable(null, $quote_text, $quote_author, $quote_active, $category)){
                 return;
             }
@@ -88,6 +108,11 @@ if (!class_exists('rsqController')) {
         {
             global $wpdb;
             $where = "";
+
+            $quote_text = sanitize_text_field($quote_text);
+            $quote_author = sanitize_text_field($quote_author);
+            $quote_active = sanitize_text_field($quote_active);
+            $category = sanitize_text_field($category);
 
             if ($item_id){
                 $where = " WHERE id=$item_id";
@@ -119,6 +144,8 @@ if (!class_exists('rsqController')) {
             global $wpdb;
             $where = "";
 
+            $quote_active = sanitize_text_field($quote_active);
+
             $sql = "SELECT * FROM $this->table_name";
             if($quote_active){
                 $lang = get_locale();
@@ -138,9 +165,9 @@ if (!class_exists('rsqController')) {
             $defaultQuotes = $this->readFile($filename);
             foreach( $defaultQuotes as $quote){
                 $this->insertItemToTable(
-                    $quote['quote_text'],
-                    $quote['quote_author'],
-                    $quote['lang'],
+                    sanitize_text_field($quote['quote_text']),
+                    sanitize_text_field($quote['quote_author']),
+                    sanitize_text_field($quote['lang']),
                     1,
                     'default'
                 );
@@ -167,9 +194,12 @@ if (!class_exists('rsqController')) {
         public function updateDefaultQuoteStatus( $status )
         {
             global $wpdb;
+
+            $status = sanitize_text_field($status);
+
             $list = $this->getAllQuotesFromTable();
             foreach( $list as $quote ){
-                $newStatus = ($status) ? 1 : 0;
+                $newStatus = ($status) ? "1" : "0";
                 $wpdb->update(
                     $this->table_name,
                     array('quote_active' => $newStatus),

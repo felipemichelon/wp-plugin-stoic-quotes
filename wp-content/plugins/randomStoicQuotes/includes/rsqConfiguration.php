@@ -111,7 +111,6 @@ if (!class_exists('rsqConfiguration')) {
                 $new_input['shortcode_use_option'] = sanitize_text_field($input['shortcode_use_option']);
     
             return $new_input;
-    
         }
     }
 }

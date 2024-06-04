@@ -44,7 +44,7 @@ if (!class_exists('randomStoicQuotes')) {
             }
 
             if($chosen['quote_author'] != ''){
-                echo '<p id="random_stoic_quotes"><span>'.esc_html($chosen['quote_text']).'</span><span> - '.esc_attr($chosen['quote_author']).'</span></p>';
+                echo '<p id="random_stoic_quotes"><span>'.esc_html($chosen['quote_text']).'</span><span> - '.esc_html($chosen['quote_author']).'</span></p>';
                 return;
             }
             echo '<p id="random_stoic_quotes"><span>'.esc_html($chosen['quote_text']).'</span></p>';
