@@ -45,30 +45,18 @@ if (!class_exists('rsqController')) {
 
         public function createTable()
         {
-            global $wpdb;
-            // $sql = "CREATE TABLE IF NOT EXISTS " . $this->table_name . " (
-            //     id int(11) NOT NULL AUTO_INCREMENT,
-            //     quote_text tinytext NOT NULL,
-            //     quote_author VARCHAR(100) NOT NULL,
-            //     lang VARCHAR(10),
-            //     quote_active TINYINT DEFAULT 1,
-            //     category VARCHAR(50),
-            //     PRIMARY KEY  (id)
-            // );";
+            $sql = "CREATE TABLE IF NOT EXISTS " . $this->table_name . " (
+                id int(11) NOT NULL AUTO_INCREMENT,
+                quote_text tinytext NOT NULL,
+                quote_author VARCHAR(100) NOT NULL,
+                lang VARCHAR(10),
+                quote_active TINYINT DEFAULT 1,
+                category VARCHAR(50),
+                PRIMARY KEY  (id)
+            );";
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            dbDelta($wpdb->prepare('CREATE TABLE IF NOT EXISTS "%s" (
-                    id int(11) NOT NULL AUTO_INCREMENT,
-                    quote_text tinytext NOT NULL,
-                    quote_author VARCHAR(100) NOT NULL,
-                    lang VARCHAR(10),
-                    quote_active TINYINT DEFAULT 1,
-                    category VARCHAR(50),
-                    PRIMARY KEY  (id)
-                );'),
-                sanitize_text_field($this->table_name)
-            );
-            // dbDelta($sql);
+            dbDelta($sql);
             return $this;
         }
 
